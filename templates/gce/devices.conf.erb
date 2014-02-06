@@ -1,0 +1,6 @@
+<% @projects.each do |project, settings| -%>
+[<%= project %>]
+  type gce
+  url [/dev/null]:<%= settings['project_id'] %>
+
+<% end -%>
