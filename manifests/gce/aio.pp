@@ -1,0 +1,1 @@
+class testbed::gce::aio{}

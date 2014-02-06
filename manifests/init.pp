@@ -1,3 +1,1 @@
-class enterprisey {
-
-}
+class testbed{}
