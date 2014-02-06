@@ -1,4 +1,4 @@
-class testbed::gce::aio(
+class testbed::gce::mco(
   $instances = {},
 ) {
   validate_hash($instances)

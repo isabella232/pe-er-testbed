@@ -5,8 +5,8 @@ class testbed::gce(
 
   require testbed
 
-  file { '/etc/puppetlabs/puppet/devices.conf':
+  file { '/etc/puppetlabs/puppet/device.conf':
     ensure => file,
-    content => template("${module_name}/gce/devices.conf.erb"),
+    content => template("${module_name}/gce/device.conf.erb"),
   }
 }
