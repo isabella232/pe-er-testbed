@@ -3,7 +3,7 @@ class testbed::gce::puppetdb(
 ) {
   validate_hash($instances)
 
-  require testbed::gce
+  require ::testbed::gce
 
   $instances_defaults = {
     'ensure' => 'present',

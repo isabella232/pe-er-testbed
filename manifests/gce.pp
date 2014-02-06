@@ -3,7 +3,7 @@ class testbed::gce(
 ) {
   validate_hash($projects)
 
-  require testbed
+  require ::testbed
 
   file { '/etc/puppetlabs/puppet/device.conf':
     ensure => file,
