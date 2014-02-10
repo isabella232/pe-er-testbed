@@ -53,7 +53,7 @@ class testbed(
   }
 
   ###############################################################################
-  ## Setup the Puppet environment on the harness and nodes to support environment
+  ## Setup the Puppet 'chroot' (for harness and downstream nodes)
   ###############################################################################
   package { 'librarian-puppet': ensure => present, provider => pe_gem, }
 
@@ -85,5 +85,22 @@ class testbed(
       Vcsrepo['Puppet data for setting up the testbed Puppet environment'],
       File['/root/.ssh/github_testbed_module_deploy_rsa'],
     ],
+  }
+
+  Ini_setting { path => '/etc/puppetlabs/puppet/puppet.conf', ensure => present, section => 'main', }
+
+  ini_setting { 'set puppet modulepath':
+    setting => 'modulepath',
+    value => '/etc/puppetlabs/puppet/environments/production/modules:/opt/puppet/share/puppet/modules',
+  }
+
+  ini_setting { 'set puppet path to site.pp':
+    setting => 'manifest',
+    value => '/etc/puppetlabs/puppet/environments/production/manifests/site.pp',
+  }
+
+  ini_setting { 'set puppet path to hiera config':
+    setting => 'hiera_config',
+    value => '/etc/puppetlabs/puppet/environments/production/data/hiera.yaml',
   }
 }
