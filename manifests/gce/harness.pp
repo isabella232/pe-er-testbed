@@ -5,10 +5,15 @@ class testbed::gce::harness(
 
   require ::testbed
 
+  File { owner => 'root', group => 'root', mode => '0644', ensure => file, }
+
   file { '/etc/puppetlabs/puppet/device.conf':
-    ensure => file,
     content => template("${module_name}/gce/device.conf.erb"),
   }
 
   file { '/etc/puppetlabs/puppet/nodes/gce': ensure => directory }
+  
+  file { '/etc/puppetlabs/puppet/nodes/gce/gce-init.sh':
+    source => "puppet:///modules/${module_name}/gce-init.sh",
+  }
 }
