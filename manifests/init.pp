@@ -37,7 +37,7 @@ class testbed(
   file { '/root/.ssh/config':
     ensure => file,
     mode => '0600',
-    source => "puppet:///${module_name}/root-.ssh-config',
+    source => "puppet:///${module_name}/root-.ssh-config",
   }
 
   ###############################################################################
