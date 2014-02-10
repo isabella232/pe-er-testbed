@@ -17,8 +17,9 @@ class testbed::aws::harness (
   File { owner => 'root', group => 'root', mode => '06', ensure => file, }
 
   file { 'root fog config':
+    path => '/root/.fog',
     mode => '0600',
-    content => template("${module_name}/fog.erb"),   
+    content => template("${module_name}/aws/harness/fog.erb"),   
   }
 
   package { ['ec2-ami-tools', 'ec2-api-tools']: ensure => installed, }
