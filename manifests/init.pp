@@ -41,17 +41,31 @@ class testbed(
   }
 
   ###############################################################################
-  ## Setup the Puppet modules we will be using for cloud harness
+  ## Setup the Puppet environment on the harness and nodes to support environment
   ###############################################################################
   package { 'librarian-puppet': ensure => present, provider => pe_gem, }
 
-  file { '/etc/puppetlabs/puppet/Puppetfile': ensure => present, source => '/vagrant/puppet/Puppetfile', }
+  file { 'Puppet production env dir':
+    ensure => directory,
+    path => '/etc/puppetlabs/puppet/environments',
+  }
+  
+  vcsrepo { 'Puppet data for setting up the testbed Puppet environment':
+    ensure => latest,
+    path => '/etc/puppetlabs/puppet/environments/production',
+    force => true,
+    source => 'git@github.com:puppetlabs/pe-er-testbed-env',
+    require => File['Puppet production env dir'],
+  }
 
   exec { 'install Puppet modules to cloud harness':
     environment => 'HOME=/tmp',
-    cwd => '/etc/puppetlabs/puppet',
+    cwd => '/etc/puppetlabs/puppet/environments/production',
   #  command => '/opt/puppet/bin/librarian-puppet install --verbose --destructive --clean 2>&1| /usr/bin/logger',
     command => '/opt/puppet/bin/librarian-puppet install --verbose | /usr/bin/logger',
-    require => [File['/etc/puppetlabs/puppet/Puppetfile'],Package['librarian-puppet']],
+    require => [
+      Package['puppet-librarian'],
+      Vcsrepo['Puppet data for setting up the testbed Puppet environment'],
+    ],
   }
 }
