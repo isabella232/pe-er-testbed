@@ -65,7 +65,7 @@ class testbed(
   #  command => '/opt/puppet/bin/librarian-puppet install --verbose --destructive --clean 2>&1| /usr/bin/logger',
     command => '/opt/puppet/bin/librarian-puppet install --verbose | /usr/bin/logger',
     require => [
-      Package['puppet-librarian'],
+      Package['librarian-puppet'],
       Vcsrepo['Puppet data for setting up the testbed Puppet environment'],
     ],
   }
