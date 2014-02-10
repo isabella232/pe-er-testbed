@@ -103,4 +103,6 @@ class testbed(
     setting => 'hiera_config',
     value => '/etc/puppetlabs/puppet/environments/production/data/hiera.yaml',
   }
+
+  file { '/etc/puppetlabs/puppet/nodes': ensure => directory, }
 }
