@@ -52,6 +52,7 @@ class testbed(
   
   vcsrepo { 'Puppet data for setting up the testbed Puppet environment':
     ensure => latest,
+    provider => 'git',
     path => '/etc/puppetlabs/puppet/environments/production',
     force => true,
     source => 'git@github.com:puppetlabs/pe-er-testbed-env',
