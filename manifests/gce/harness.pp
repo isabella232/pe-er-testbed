@@ -14,6 +14,7 @@ class testbed::gce::harness(
   file { '/etc/puppetlabs/puppet/nodes/gce': ensure => directory }
   
   file { '/etc/puppetlabs/puppet/nodes/gce/gce-init.sh':
+    mode => '0755',
     source => "puppet:///modules/${module_name}/gce-init.sh",
   }
 }
