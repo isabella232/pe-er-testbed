@@ -1,20 +1,19 @@
 class testbed(
   $users = {},
+  $github_data_deploy_pub_key,
+  $github_data_deploy_priv_key,
+  $github_testbed_module_deploy_pub_key,
+  $github_testbed_module_deploy_priv_key
 ) {
   validate_hash($users)
 
   $users_defaults = { 'managehome' => true, shell => '/bin/bash', }
   create_resources('user', $users, $users_defaults)
 
-  ###############################################################################
-  ## These must be specified in Hiera
-  ###############################################################################
-  # Why in the hell is the hiera() call necessary to put these in scope!!?!?
-  #$github_deploy_pub_key = hiera('github_deploy_pub_key')
-  #$github_deploy_priv_key = hiera('github_deploy_priv_key')
-  #validate_string($github_deploy_pub_key)
-  #validate_string($github_deploy_priv_key)
-
+  validate_string($github_data_deploy_pub_key)
+  validate_string($github_data_deploy_priv_key)
+  validate_string($github_testbed_module_deploy_pub_key)
+  validate_string($github_testbed_module_deploy_priv_key)
 
   ###############################################################################
   ## Let's set up a deploy key to GitHub so we can pull down a private repo
@@ -23,15 +22,28 @@ class testbed(
 
   file { '/root/.ssh': ensure => directory, mode => '0700', }
 
-  file { '/root/.ssh/github_deploy_rsa':
+  file { '/root/.ssh/github_data_deploy_rsa':
     ensure => file,
     mode => '0600',
-    content => $github_deploy_priv_key,
+    content => $github_data_deploy_priv_key,
   }
 
-  file { '/root/.ssh/github_deploy_rsa.pub':
+  file { '/root/.ssh/github_data_deploy_rsa.pub':
     ensure => file,
-    content => $github_deploy_pub_key,
+    mode => '0600',
+    content => $github_data_deploy_pub_key,
+  }
+
+  file { '/root/.ssh/github_testbed_module_deploy_rsa':
+    ensure => file,
+    mode => '0600',
+    content => $github_testbed_module_deploy_priv_key,
+  }
+
+  file { '/root/.ssh/github_testbed_module_deploy_rsa.pub':
+    ensure => file,
+    mode => '0600',
+    content => $github_testbed_module_deploy_pub_key,
   }
 
   file { '/root/.ssh/config':
@@ -56,7 +68,11 @@ class testbed(
     path => '/etc/puppetlabs/puppet/environments/production',
     force => true,
     source => 'git@github.com:puppetlabs/pe-er-testbed-env',
-    require => File['Puppet production env dir'],
+    require => [
+      File['Puppet production env dir'],
+      File['/root/.ssh/config'],
+      File['/root/.ssh/github_data_deploy_rsa'],
+    ],
   }
 
   exec { 'install Puppet modules to cloud harness':
@@ -67,6 +83,7 @@ class testbed(
     require => [
       Package['librarian-puppet'],
       Vcsrepo['Puppet data for setting up the testbed Puppet environment'],
+      File['/root/.ssh/github_testbed_module_deploy_rsa'],
     ],
   }
 }
