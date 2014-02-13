@@ -1,1 +1,1 @@
-class testbed::harness::aws inherits testbed::hardness {}
+class testbed::harness::aws inherits testbed::harness {}
