@@ -1,18 +1,12 @@
 class testbed::harness(
-  $users = {},
-  $github_data_deploy_pub_key,
-  $github_data_deploy_priv_key,
+  $github_envrepo_deploy_pub_key,
+  $github_envrepo_deploy_priv_key,
   $github_testbed_module_deploy_pub_key,
   $github_testbed_module_deploy_priv_key
 ) inherits testbed {
 
-  validate_hash($users)
-
-  $users_defaults = { 'managehome' => true, shell => '/bin/bash', }
-  create_resources('user', $users, $users_defaults)
-
-  validate_string($github_data_deploy_pub_key)
-  validate_string($github_data_deploy_priv_key)
+  validate_string($github_envrepo_deploy_pub_key)
+  validate_string($github_envrepo_deploy_priv_key)
   validate_string($github_testbed_module_deploy_pub_key)
   validate_string($github_testbed_module_deploy_priv_key)
 
@@ -23,16 +17,16 @@ class testbed::harness(
 
   file { '/root/.ssh': ensure => directory, mode => '0700', }
 
-  file { '/root/.ssh/github_data_deploy_rsa':
+  file { '/root/.ssh/github_envrepo_deploy_rsa':
     ensure => file,
     mode => '0600',
-    content => $github_data_deploy_priv_key,
+    content => $github_envrepo_deploy_priv_key,
   }
 
-  file { '/root/.ssh/github_data_deploy_rsa.pub':
+  file { '/root/.ssh/github_envrepo_deploy_rsa.pub':
     ensure => file,
     mode => '0600',
-    content => $github_data_deploy_pub_key,
+    content => $github_envrepo_deploy_pub_key,
   }
 
   file { '/root/.ssh/github_testbed_module_deploy_rsa':
@@ -54,9 +48,10 @@ class testbed::harness(
   }
 
   ###############################################################################
-  ## Setup the Puppet 'chroot' (for harness and downstream nodes)
+  ## Setup r10k
   ###############################################################################
   package { 'librarian-puppet': ensure => present, provider => pe_gem, }
+  require r10k
 
   file { 'Puppet production env dir':
     ensure => directory,
@@ -73,7 +68,7 @@ class testbed::harness(
     require => [
       File['Puppet production env dir'],
       File['/root/.ssh/config'],
-      File['/root/.ssh/github_data_deploy_rsa'],
+      File['/root/.ssh/github_envrepo_deploy_rsa'],
     ],
   }
 
