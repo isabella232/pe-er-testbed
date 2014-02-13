@@ -4,6 +4,6 @@ class testbed(
 
   validate_hash($users)
 
-  $users_default = { ensure => present, managehome => true, }
+  $users_defaults = { ensure => present, managehome => true, }
   create_resources('pe_accounts::user', $users, $users_defaults)
 }
