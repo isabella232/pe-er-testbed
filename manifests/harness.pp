@@ -1,8 +1,6 @@
 class testbed::harness(
   $github_envrepo_deploy_pub_key,
   $github_envrepo_deploy_priv_key,
-  $github_testbed_module_deploy_pub_key,
-  $github_testbed_module_deploy_priv_key
 ) inherits testbed {
 
   validate_string($github_envrepo_deploy_pub_key)
