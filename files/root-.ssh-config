@@ -1,4 +1,3 @@
 Host github.com
 	IdentityFile /root/.ssh/github_envrepo_deploy_rsa
-	IdentityFile /root/.ssh/github_testbed_module_deploy_rsa
 	StrictHostKeyChecking no

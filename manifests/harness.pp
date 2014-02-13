@@ -29,18 +29,6 @@ class testbed::harness(
     content => $github_envrepo_deploy_pub_key,
   }
 
-  file { '/root/.ssh/github_testbed_module_deploy_rsa':
-    ensure => file,
-    mode => '0600',
-    content => $github_testbed_module_deploy_priv_key,
-  }
-
-  file { '/root/.ssh/github_testbed_module_deploy_rsa.pub':
-    ensure => file,
-    mode => '0600',
-    content => $github_testbed_module_deploy_pub_key,
-  }
-
   file { '/root/.ssh/config':
     ensure => file,
     mode => '0600',
