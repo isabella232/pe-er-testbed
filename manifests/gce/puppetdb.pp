@@ -16,7 +16,7 @@ class testbed::gce::puppetdb(
     'metadata' => {
       'pe_role' => 'agent',
       'pe_master' => 'puppet',
-       'pe_version' => '3.1.2'
+       'pe_version' => '3.1.3'
     }
   }
   create_resources('gce_instance', $instances, $instances_defaults)

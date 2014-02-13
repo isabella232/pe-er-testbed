@@ -1,2 +1,1 @@
-class testbed::gce() {
-}
+class testbed::gce {}
