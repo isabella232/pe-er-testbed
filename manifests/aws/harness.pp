@@ -12,6 +12,8 @@ class testbed::aws::harness (
   validate_string($aws_ssh_pub_key)
   validate_string($aws_ssh_priv_key)
 
+  require java
+
   file { '/etc/puppetlabs/puppet/nodes/aws': ensure => directory, }
 
   File { owner => 'root', group => 'root', mode => '06', ensure => file, }

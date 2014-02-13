@@ -1,1 +1,3 @@
-class testbed::aws{}
+class testbed::aws(
+) {
+}

@@ -4,6 +4,7 @@ class testbed::gce::harness(
   validate_hash($projects)
 
   require ::testbed
+  require ::google_cloud_sdk
 
   File { owner => 'root', group => 'root', mode => '0644', ensure => file, }
 
