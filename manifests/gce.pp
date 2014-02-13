@@ -11,13 +11,8 @@ class testbed::gce(
       'pe_role' => 'agent',
       'pe_master' => 'puppet',
       'pe_version' => '3.1.3'
-    },
-    'manifest' => "host { ${puppetmaster_fqdn}:
-        ensure => present,
-        ip => ${puppmaster_ip},
-        aliases => 'puppet',
-        }"
     }
+  }
   create_resources('gce_instance', $instances, $instances_defaults)
 
   $firewalls_defaults = { 'ensure' => 'present', 'network' => 'default', }
