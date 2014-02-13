@@ -53,6 +53,7 @@ class testbed::harness(
   package { 'librarian-puppet': ensure => present, provider => pe_gem, }
 
   require r10k
+  include r10k::mcollective
 
   file { 'Puppet production env dir':
     ensure => directory,
