@@ -78,6 +78,7 @@ class testbed::harness(
 
   file { 'autosign.conf':
     ensure => file,
+    file => '/etc/puppetlabs/puppet/autosign.conf',
     content => $autosign ? {
       true => "*.${::domain}",
       default => '',
