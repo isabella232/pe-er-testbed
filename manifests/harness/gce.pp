@@ -1,6 +1,6 @@
 class testbed::harness::gce (
   $projects = {}
-) inherits testbed::gce {
+) inherits testbed::harness {
   validate_hash($projects)
 
   require ::testbed
