@@ -1,9 +1,9 @@
 class testbed::harness::gce (
   $projects = {}
-) inherits testbed::harness {
+) {
   validate_hash($projects)
 
-  require ::testbed
+  require ::testbed::harness
   require ::google_cloud_sdk
 
   File { owner => 'root', group => 'root', mode => '0644', ensure => file, }

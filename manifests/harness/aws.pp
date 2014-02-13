@@ -1,1 +1,3 @@
-class testbed::harness::aws inherits testbed::harness {}
+class testbed::harness::aws {
+  require ::testbed::harness
+}
