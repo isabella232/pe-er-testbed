@@ -6,7 +6,7 @@
   :datadir: /etc/puppetlabs/puppet/environments/production/data
 
 :hierarchy:
-  - "gceproject/%{::clientcert}"
-  - ec2env/ec2env
+  - gcenodes
+  - ec2nodes
   - "hostname/%{::hostname}"
   - common
