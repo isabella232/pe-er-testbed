@@ -1,12 +1,12 @@
 class testbed::harness(
   $github_envrepo_deploy_pub_key,
   $github_envrepo_deploy_priv_key,
+  $autosign = false,
 ) inherits testbed {
 
   validate_string($github_envrepo_deploy_pub_key)
   validate_string($github_envrepo_deploy_priv_key)
-  validate_string($github_testbed_module_deploy_pub_key)
-  validate_string($github_testbed_module_deploy_priv_key)
+  validate_bool($autosign)
 
   ###############################################################################
   ## Let's set up a deploy key to GitHub so we can pull down a private repo
@@ -69,5 +69,18 @@ class testbed::harness(
     path => '/etc/puppetlabs/puppet/hiera.yaml',
     source => "puppet:///modules/${module_name}/hiera.yaml",
     notify => Service['pe-httpd'],
+  }
+
+  file { 'autosign.conf':
+    ensure => file,
+    
+  }
+
+  file { 'autosign.conf':
+    ensure => file,
+    content => $autosign ? {
+      true => "*.${::domain}",
+      default => '',
+    }
   }
 }
