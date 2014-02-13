@@ -13,8 +13,6 @@ class testbed::gce(
       'pe_version' => '3.1.3'
     }
   }
-  create_resources('gce_instance', $instances, $instances_defaults)
 
   $firewalls_defaults = { 'ensure' => 'present', 'network' => 'default', }
-  create_resources('gce_firewall', $firewalls, $firewalls_defaults)
 }

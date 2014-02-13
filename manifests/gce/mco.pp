@@ -8,4 +8,7 @@ class testbed::gce::mco(
   validate_hash($firewalls)
   validate_string($puppetmaster_fqdn)
   validate_string($puppetmaster_ip)
+
+  create_resources('gce_instance', $instances, $instances_defaults)
+  create_resources('gce_firewall', $firewalls, $firewalls_defaults)
 }
