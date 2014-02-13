@@ -51,6 +51,7 @@ class testbed::harness(
   ## Setup r10k
   ###############################################################################
   package { 'librarian-puppet': ensure => present, provider => pe_gem, }
+
   require r10k
 
   file { 'Puppet production env dir':
@@ -58,48 +59,27 @@ class testbed::harness(
     path => '/etc/puppetlabs/puppet/environments',
   }
   
-  vcsrepo { 'Puppet data for setting up the testbed Puppet environment':
-    ensure => latest,
-    provider => 'git',
-    revision => 'master',
-    path => '/etc/puppetlabs/puppet/environments/production',
-    force => true,
-    source => 'git@github.com:puppetlabs/pe-er-testbed-env',
-    require => [
-      File['Puppet production env dir'],
-      File['/root/.ssh/config'],
-      File['/root/.ssh/github_envrepo_deploy_rsa'],
-    ],
-  }
-
-  exec { 'install Puppet modules to cloud harness':
-    environment => 'HOME=/tmp',
-    cwd => '/etc/puppetlabs/puppet/environments/production',
-  #  command => '/opt/puppet/bin/librarian-puppet install --verbose --destructive --clean 2>&1| /usr/bin/logger',
-    command => '/opt/puppet/bin/librarian-puppet install --verbose | /usr/bin/logger',
-    require => [
-      Package['librarian-puppet'],
-      Vcsrepo['Puppet data for setting up the testbed Puppet environment'],
-      File['/root/.ssh/github_testbed_module_deploy_rsa'],
-    ],
-  }
-
   Ini_setting { path => '/etc/puppetlabs/puppet/puppet.conf', ensure => present, section => 'main', }
 
   ini_setting { 'set puppet modulepath':
     setting => 'modulepath',
-    value => '/etc/puppetlabs/puppet/environments/production/modules:/opt/puppet/share/puppet/modules',
+    value => '/etc/puppetlabs/puppet/environments/$environment/modules:/opt/puppet/share/puppet/modules',
   }
 
   ini_setting { 'set puppet path to site.pp':
     setting => 'manifest',
-    value => '/etc/puppetlabs/puppet/environments/production/manifests/site.pp',
+    value => '/etc/puppetlabs/puppet/environments/$environment/manifests/site.pp',
   }
 
   ini_setting { 'set puppet path to hiera config':
     setting => 'hiera_config',
-    value => '/etc/puppetlabs/puppet/environments/production/data/hiera.yaml',
+    value => '/etc/puppetlabs/puppet/hiera.yaml',
   }
 
-  file { '/etc/puppetlabs/puppet/nodes': ensure => directory, }
+  file { 'hiera config':
+    ensure => file,
+    path => '/etc/puppetlabs/puppet/hiera.yaml',
+    source => "puppet:///modules/${module_name}/hiera.yaml",
+    notify => Service['pe-httpd'],
+  }
 }

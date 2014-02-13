@@ -1,0 +1,12 @@
+---
+:backends:
+  - yaml
+
+:yaml:
+  :datadir: /etc/puppetlabs/puppet/environments/production/data
+
+:hierarchy:
+  - "gceproject/%{::clientcert}"
+  - ec2env/ec2env
+  - "hostname/%{::hostname}"
+  - common
