@@ -1,6 +1,6 @@
 class testbed(
   $users = {},
-  $sh_authorized_keys = {}
+  $ssh_authorized_keys = {}
 ) {
 
   validate_hash($users)
@@ -10,5 +10,5 @@ class testbed(
   create_resources('pe_accounts::user', $users, $users_defaults)
   
   $sshauthkeys_defaults = {}
-  create_resources('ssh_authorized_keys', $ssh_authorized_keys, $sshauthkeys_defaults)
+  create_resources('ssh_authorized_key', $ssh_authorized_keys, $sshauthkeys_defaults)
 }
