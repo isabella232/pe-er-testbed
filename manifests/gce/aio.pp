@@ -1,9 +1,13 @@
 class testbed::gce::aio(
   $instances = {},
-  $firewalls = {}
+  $firewalls = {},
+  $puppetmaster_fqdn,
+  $puppetmaster_ip
 ) {
   validate_hash($instances)
   validate_hash($firewalls)
+  validate_string($puppetmaster_fqdn)
+  validate_string($puppetmaster_ip)
 
   require ::testbed::gce
 
@@ -16,14 +20,16 @@ class testbed::gce::aio(
     'metadata' => {
       'pe_role' => 'agent',
       'pe_master' => 'puppet',
-       'pe_version' => '3.1.3'
+      'pe_version' => '3.1.3'
+    },
+    'manifest' => "host { ${puppetmaster_fqdn}:
+        ensure => present,
+        ip => ${puppmaster_ip},
+        aliases => 'puppet',
+        }"
     }
-  }
   create_resources('gce_instance', $instances, $instances_defaults)
 
-  $firewalls_defaults = {
-    'ensure' => 'present',
-    'network' => 'default',
-  }
+  $firewalls_defaults = { 'ensure' => 'present', 'network' => 'default', }
   create_resources('gce_firewall', $firewalls, $firewalls_defaults)
 }
