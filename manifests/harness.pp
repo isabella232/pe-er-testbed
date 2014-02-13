@@ -54,7 +54,7 @@ class testbed::harness(
 
   require r10k
 #  include r10k::mcollective
-  include r10k::prerun_command
+#  include r10k::prerun_command
 
   file { 'Puppet production env dir':
     ensure => directory,
