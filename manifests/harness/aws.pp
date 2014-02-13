@@ -1,4 +1,4 @@
-class testbed::harness::aws {
+class testbed::harness::aws (
   $projects = {},
   $aws_access_key_id,
   $aws_secret_access_key,
