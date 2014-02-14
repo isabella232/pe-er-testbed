@@ -20,6 +20,8 @@ class testbed::aws::aio(
     ensure => present, 
     provider => 'ec2',
     connection => 'aws',
+    image => 'ami-5d456c18',
+    flavor => 't1.micro',
     require => Cloud_connection['aws'],
   }
   create_resources('instance', $instances, $instances_defaults)
