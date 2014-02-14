@@ -1,4 +1,4 @@
-class testbed::aws::aio(
+class testbed::aws::puppetdb(
   $instances = {}
 ) inherts testbed::aws {
   
