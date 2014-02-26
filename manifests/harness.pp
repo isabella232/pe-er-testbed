@@ -43,7 +43,7 @@ class testbed::harness(
 #  include r10k::prerun_command
 
   file { 'Puppet production env dir':
-    ensure => directory,
+    ensure => present,
     path => '/etc/puppetlabs/puppet/environments',
   }
   
@@ -68,7 +68,7 @@ class testbed::harness(
     ensure => file,
     path => '/etc/puppetlabs/puppet/hiera.yaml',
     source => "puppet:///modules/${module_name}/hiera.yaml",
-    notify => Service['pe-httpd'],
+#    notify => Service['pe-httpd'],
   }
 
   file { 'autosign.conf':
