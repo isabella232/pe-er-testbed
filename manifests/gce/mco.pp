@@ -9,7 +9,7 @@ class testbed::gce::mco(
 
   require ::testbed::gce
 
-  $disks_defaults = { 'ensure' => 'present', 'zone' => 'us-central1-a', }
+  $disks_defaults = { ensure => 'present', zone => 'us-central1-a', source_image => 'centos-6-v20131120', }
   create_resources('gce_disk', $disks, $disks_defaults)
 
   $instances_defaults = {
